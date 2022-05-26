@@ -8,14 +8,15 @@
  */
 
 class Game {
-  constructor(a = 7, b = 6) {
+  constructor(width = 7, height = 6) {
     this.p1 = 1;
     this.p2 = 2;
-    this.WIDTH = a;
-    this.HEIGHT = b;
+    this.WIDTH = width;
+    this.HEIGHT = height;
     this.currPlayer = 1;
     this.board = [];
-    this.addEventListener('click', handleClick);
+
+    // this.addEventListener('click', handleClick);
     this.makeBoard();
     this.makeHtmlBoard();
   }
@@ -36,7 +37,8 @@ class Game {
     // make column tops (clickable area for adding a piece to that column)
     const top = document.createElement('tr');
     top.setAttribute('id', 'column-top');
-    top.addEventListener('click', handleClick);
+    top.addEventListener('click', this.handleClick.bind(this));
+
 
     for (let x = 0; x < this.WIDTH; x++) {
       const headCell = document.createElement('td');
