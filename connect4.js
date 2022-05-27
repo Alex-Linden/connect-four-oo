@@ -110,7 +110,7 @@ class Game {
     }
 
     // check for tie
-    if (this.board.every(row => row.every(cell => cell))) {
+    if (this.board[0].every(cell => cell)) {
       return this.endGame('Tie!');
     }
 
@@ -119,7 +119,23 @@ class Game {
   }
 
   /** checkForWin: check board cell-by-cell for "does a win start here?" */
-  _win(cells) {
+  /* _win(cells) {
+    // Check four cells to see if they're all color of current player
+    //  - cells: list of four (y, x) cells
+    //  - returns true if all are legal coordinates & all match currPlayer
+
+    return cells.every(
+      ([y, x]) =>
+        y >= 0 &&
+        y < this.height &&
+        x >= 0 &&
+        x < this.width &&
+        this.board[y][x] === this.currPlayer
+    );
+  } */
+  checkForWin() {
+
+    function _win(cells) {
     // Check four cells to see if they're all color of current player
     //  - cells: list of four (y, x) cells
     //  - returns true if all are legal coordinates & all match currPlayer
@@ -133,9 +149,7 @@ class Game {
         this.board[y][x] === this.currPlayer
     );
   }
-  checkForWin() {
-
-
+  const _winBound = _win.bind(this);
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         // get "check list" of 4 cells (starting here) for each of the different
@@ -146,7 +160,7 @@ class Game {
         const diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
 
         // find winner (only checking each win-possibility as needed)
-        if (this._win(horiz) || this._win(vert) || this._win(diagDR) || this._win(diagDL)) {
+        if (_winBound(horiz) || _winBound(vert) || _winBound(diagDR) || _winBound(diagDL)) {
           return true;
         }
       }
@@ -306,3 +320,6 @@ let game = new Game (6,7);
 
 // makeBoard();
 // makeHtmlBoard();
+
+
+//row => row.every
